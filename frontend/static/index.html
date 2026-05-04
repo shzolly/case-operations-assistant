@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NJ Judiciary Case Operations Assistant</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="workspace">
+        <header class="masthead">
+          <div>
+            <p>New Jersey Judiciary</p>
+            <h1>Case Operations Assistant</h1>
+          </div>
+          <div class="status-pill" id="serviceStatus">Checking service</div>
+        </header>
+
+        <section class="controls" aria-label="Demo controls">
+          <label>
+            Role
+            <select id="role">
+              <option value="clerk">Clerk</option>
+              <option value="supervisor">Supervisor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+          <label>
+            User
+            <input id="userId" value="demo.clerk" />
+          </label>
+        </section>
+
+        <section class="quick-prompts" aria-label="Demo prompts">
+          <button class="secondary" data-prompt="What should I do next for case FM-2026-001?">Family follow-up</button>
+          <button class="secondary" data-prompt="What is the status for case SC-2026-014?">Civil status</button>
+          <button class="secondary" data-prompt="What should I do next?">Missing case</button>
+        </section>
+
+        <section class="composer" aria-label="Ask the assistant">
+          <textarea id="message">What should I do next for case FM-2026-001?</textarea>
+          <button id="askButton" aria-label="Ask assistant">Ask</button>
+        </section>
+
+        <section class="answer">
+          <h2>Recommendation</h2>
+          <p id="answerText">Ask a question to load a recommendation.</p>
+        </section>
+
+        <section class="approvals-panel">
+          <div class="section-heading">
+            <h2>Approvals</h2>
+            <p id="approvalStatus"></p>
+          </div>
+          <div id="approvals">No approvals recorded.</div>
+        </section>
+      </section>
+
+      <aside>
+        <section>
+          <h2>Case Context</h2>
+          <dl id="caseContext">
+            <dt>Status</dt>
+            <dd>No case loaded.</dd>
+          </dl>
+        </section>
+
+        <section>
+          <h2>Citations</h2>
+          <div id="citations"></div>
+        </section>
+
+        <section>
+          <h2>Workflow Trace</h2>
+          <ol id="workflowTrace"></ol>
+        </section>
+
+        <section>
+          <h2>Audit Events</h2>
+          <div id="auditEvents">Admin role can load audit events.</div>
+        </section>
+      </aside>
+    </main>
+    <script src="/main.js"></script>
+  </body>
+</html>

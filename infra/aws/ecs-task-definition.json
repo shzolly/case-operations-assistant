@@ -1,0 +1,59 @@
+{
+  "family": "judiciary-ai-assistant",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "executionRoleArn": "arn:aws:iam::<account-id>:role/judiciary-ai-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::<account-id>:role/judiciary-ai-task-role",
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "<account-id>.dkr.ecr.<region>.amazonaws.com/judiciary-ai-backend:<image-tag>",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "APP_ENV", "value": "prod" },
+        { "name": "RAG_BACKEND", "value": "pgvector" },
+        { "name": "OPENAI_EMBEDDING_MODEL", "value": "text-embedding-3-small" },
+        { "name": "OPENAI_EMBEDDING_DIMENSIONS", "value": "1536" }
+      ],
+      "secrets": [
+        {
+          "name": "OPENAI_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:<region>:<account-id>:secret:judiciary-ai/openai-api-key"
+        },
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:<region>:<account-id>:secret:judiciary-ai/database-url"
+        }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)\""],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 30
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/judiciary-ai-assistant",
+          "awslogs-region": "<region>",
+          "awslogs-stream-prefix": "backend"
+        }
+      }
+    }
+  ]
+}
+
