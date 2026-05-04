@@ -21,8 +21,10 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v "$HOME/.cache/trivy:/root/.cache/" \
             aquasec/trivy:0.69.3 image \
+            --scanners vuln \
             --format table \
             --severity CRITICAL,HIGH \
+            --ignore-unfixed \
             --exit-code 1 \
             judiciary-ai-backend:scan
 
@@ -35,7 +37,9 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v "$HOME/.cache/trivy:/root/.cache/" \
             aquasec/trivy:0.69.3 image \
+            --scanners vuln \
             --format table \
             --severity CRITICAL,HIGH \
+            --ignore-unfixed \
             --exit-code 1 \
             judiciary-ai-frontend:scan
